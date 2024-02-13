@@ -1,0 +1,57 @@
+function getTotalService() {
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+    return checkboxes.length;
+}
+
+
+function getServiceCost() {
+    const serviceCostTable = {
+        "Cleaning": 500,
+        "Repair": 2500
+        // want more sevices add more 
+    };
+    
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+    let totalCost = 0;
+    checkboxes.forEach(checkbox => {
+        const serviceName = checkbox.value;
+        totalCost += serviceCostTable[serviceName];
+    });
+
+    return totalCost;
+}
+
+
+function calculateDiscount(serviceCost) {
+    const discountPercentage = 15;
+    const discountedCost = serviceCost - (serviceCost * discountPercentage / 100);
+    return discountedCost;
+}
+
+
+function getYearlyMaintenanceCost() {
+    const yearlyMaintenanceCheckbox = document.getElementById('yearlyMaintenance');
+    
+    if (yearlyMaintenanceCheckbox.checked) {
+        return 1500;
+    } else {
+        return 0;
+    }
+}
+
+
+function bookAppointment() {
+    const totalServices = getTotalService();
+    const serviceCost = getServiceCost();
+    let totalCost = serviceCost;
+
+    if (totalServices > 2) {
+        totalCost = calculateDiscount(serviceCost);
+    }
+
+    const yearlyMaintenanceCost = getYearlyMaintenanceCost();
+    totalCost += yearlyMaintenanceCost;
+
+    const resultDiv = document.getElementById("result");
+    resultDiv.innerHTML = `Total Cost: $${Math.round(totalCost)}`;
+}
